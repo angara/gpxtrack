@@ -1,0 +1,28 @@
+{
+  "name": "gpt-web",
+  "version": "0.1.0",
+  "description": "GPX Track: Web UI",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angara/gpxtrack.git"
+  },
+  "scripts": {
+    "dev": "shadow-cljs watch dev",
+    "compile": "shadow-cljs compile dev",
+    "release": "shadow-cljs release prod",
+    "bump": "npm --no-git-tag-version version patch"
+  },
+  "author": "Maxim Penzin",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "shadow-cljs": "2.10.21",
+    "tailwindcss": "1.6.2"
+  },
+  "dependencies": {
+    "leaflet": "^1.6.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-leaflet": "^2.7.0"
+  }
+}

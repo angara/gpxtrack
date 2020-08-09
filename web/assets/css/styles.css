@@ -1,0 +1,18 @@
+
+@tailwind base;
+
+@tailwind components;
+
+.example {
+  @apply bg-fixed
+}
+
+.tbl-spaced td {
+  padding: 0.25rem 0.5rem;
+}
+
+@tailwind utilities;
+
+.leaflet-container {
+  border-radius: 5px;
+}

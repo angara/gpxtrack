@@ -1,0 +1,24 @@
+{ 
+  :source-paths ["src"]
+  :dependencies 
+  [
+    [reagent "1.0.0-alpha2" :exclusions [react react-dom]]
+    [re-frame "1.0.0"]
+    [com.taoensso/timbre "4.10.0"]
+    [cljs-ajax "0.8.0"]]
+  ;
+  :dev-http {8080 "build/dev/public/"}
+  ;
+  :builds 
+  { :dev 
+    { :target     :browser
+      :output-dir "build/dev/public/js/"
+      :asset-path "/js"
+      :modules    {:main {:init-fn gpt.web.main/main!}}
+      :devtools   {:after-load gpt.web.main/reload!}}
+    :prod
+    { :target     :browser
+      :output-dir "build/prod/public/js/"
+      :asset-path "/js"
+      :modules    {:main {:init-fn gpt.web.main/main!}}}}}
+  ;
