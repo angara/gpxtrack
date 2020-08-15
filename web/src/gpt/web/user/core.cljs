@@ -28,3 +28,10 @@
     (set-bearer! jwt)
     {:db (assoc db :user user)}))
 ;-
+
+
+(defn user-bar []
+  [:div.absolute.bg-white.rounded.py-1.px-3.shadow-md.opacity-75
+    {:style {:top "0.7rem" :right "0.8rem" :z-index 1000}}
+    "User"])
+;;

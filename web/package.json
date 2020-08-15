@@ -20,9 +20,9 @@
     "tailwindcss": "1.6.2"
   },
   "dependencies": {
-    "leaflet": "^1.6.0",
+    "leaflet": "1.6.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-leaflet": "^2.7.0"
+    "react-leaflet": "2.7.0"
   }
 }
