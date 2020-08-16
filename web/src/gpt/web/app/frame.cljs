@@ -5,11 +5,9 @@
     ;
     [gpt.web.const  :refer [VIEW_DASHBOARD VIEW_DOCLIST]]
     ;
-    [gpt.web.app.leaflet  :refer [map-panel]]
+    [gpt.web.app.leaflet  :refer [map-panel coords-bar]]
     [gpt.web.user.core    :refer  [user-bar]]
     ;
-   ;
-   ;
    ;;;;;
     [gpt.web.lib.icons       :as     icons]
     [gpt.web.views.dashboard :refer  [dashboard-view]]
@@ -94,8 +92,9 @@
       [:div.flex-grow.px-2.mb-1 
         [track-list]]]
       ;[:footer.flex-1.flex-grow-0 [left-footer]]]
-    [:div.bg-green-300.flex-grow
-      [map-panel]]
+    [:div.bg-green-300.flex-grow.relative
+      [map-panel]
+      [coords-bar]]
     [user-bar]])
 
 ;      [nav-bar]

@@ -12,9 +12,19 @@
 ;; var map = new L.map("map-container",{ zoomControl: false});
 ;; L.control.zoom({ position: 'topright' }).addTo(map);
 
+(defn- evt->latlon [evt]
+  (when-let [coords (-> evt .-latlng)]
+    { :lat (-> coords .-lat)
+      :lon (-> coords .-lng)}))
+;-
+
 (defn map-panel []
   [:> Map
-    {:center {:lon 104.2479 :lat 52.2752} :zoom 9 :class "h-full"}
+    { :class "h-full"
+      :center {:lon 104.2479 :lat 52.2752} 
+      :zoom 9
+      ;:on-mouse-move (fn [evt] (debug (-> evt .-latlng)))
+      :on-click #(rf/dispatch [::map-click (evt->latlon %)])}
     [:> TileLayer
       {:attribution "&copy; OpenStreetMap"
         :url "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}]])
@@ -25,4 +35,32 @@
     ;;     {:key id :position [(:lat m) (:lon m)]
     ;;       :on-click #(rf/dispatch [::marker-click id])}
     ;;     [:> Popup (:title m)]])])
+;;
+
+(rf/reg-event-db
+  ::map-click
+  (fn [db [_ latlon]]
+    (debug "latlon:" latlon)
+    (assoc db ::click-coords latlon)))
+
+(rf/reg-sub
+  ::click-coords
+  (fn [db]
+    (get db ::click-coords)))
+;-
+
+(defn- deg6 [lbl val]
+  (when val
+    [:span [:span.text-pink-700 str lbl] (.toFixed val 6)]))
+;-
+
+(defn coords-bar []
+  (let [coords @(rf/subscribe [::click-coords])
+        lat (deg6 "Lat: " (:lat coords))
+        lon (deg6 "Lon: " (:lon coords))]
+    [:div.absolute.text-sm.text-purple-800
+      {:style 
+        { :left "14px" :bottom "4px" :z-index 450}}
+          ;:filter "drop-shadow(2px 2px 2px #ffffff)"}}
+      lat [:i.mx-1 " "] lon]))
 ;;
