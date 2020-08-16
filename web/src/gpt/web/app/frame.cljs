@@ -9,9 +9,10 @@
     [gpt.web.user.core    :refer  [user-bar]]
     ;
    ;;;;;
-    [gpt.web.lib.icons       :as     icons]
-    [gpt.web.views.dashboard :refer  [dashboard-view]]
-    [gpt.web.views.doclist   :refer  [doclist-view]]))
+    [gpt.web.lib.icons        :as      icons]
+    [gpt.web.lib.modal        :refer  [modal-panel]]
+    [gpt.web.views.dashboard  :refer  [dashboard-view]]
+    [gpt.web.views.doclist    :refer  [doclist-view]]))
 ;=
 
 (defn gpxtrack-bar []
@@ -32,6 +33,7 @@
 
 (defn filters []
   [:div.p-2
+    {:on-click #(rf/dispatch [:show-modal {}])}
     [:div "#tag1"]
     [:div "#tag2"]
     [:div "#tag3"]])
@@ -95,8 +97,8 @@
     [:div.bg-green-300.flex-grow.relative
       [map-panel]
       [coords-bar]]
-    [user-bar]])
-
+    [user-bar]
+    [modal-panel]])
 ;      [nav-bar]
       ;; [:div.mx-auto.px-4.h-full.p-3.pb-10.pt-20
       ;;   [:div.flex.flex-col.h-full.-mt-1

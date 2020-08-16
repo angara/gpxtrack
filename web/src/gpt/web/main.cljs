@@ -17,6 +17,10 @@
       (.-title)
       (set! "GPX Track"))
   ;
+  (js/document.addEventListener "keyup"
+     #(when (= 27 (-> % .-keyCode))
+        (rf/dispatch [:close-modal])))
+  ;
   (rdom/render [app]
     (js/document.getElementById "app_root")))
 ;;
