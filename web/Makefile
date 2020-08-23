@@ -5,10 +5,10 @@
 DEV_RES   = ./build/dev
 PROD_RES  = ./build/prod
 
-cssdev:
-	mkdir -p ${DEV_RES}/public/
-	cp -r assets/* ${DEV_RES}/public/
-	npx tailwindcss build assets/css/styles.css -o ${DEV_RES}/public/css/styles.css
+# cssdev:
+# 	mkdir -p ${DEV_RES}/public/
+# 	cp -r assets/* ${DEV_RES}/public/
+# 	npx tailwindcss build assets/css/styles.css -o ${DEV_RES}/public/css/styles.css
 
 prod_assets:
 	@echo "prod assets"

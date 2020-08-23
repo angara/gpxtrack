@@ -4,7 +4,7 @@
     [re-frame.core :as rf]
     ;
     [gpt.web.lib.icons :as icons]
-    [gpt.web.lib.btn    :refer [btn-prim]]))
+    [gpt.web.lib.btn    :refer [btn-prim btn-white btn-warn]]))
 ;=
 
 
@@ -63,9 +63,10 @@
               {}
               #(debug "click:" %)
               "Ok")
-            [:button 
-              {:on-click close}
-              "Cancel"]]
+            (btn-white
+              { :style {:margin-left "1rem"}}
+              close
+              "Cancel")]
           ;
           [:botton.absolute.cursor-pointer.text-gray-500
             { :on-click close
