@@ -1,0 +1,27 @@
+{
+  :gpxtrack
+  {
+    :http
+    {
+      :host "localhost"
+      :port 8020}
+
+    :psql {:url ""}      ;; MUST BE SET!!!
+  
+    :jwt
+    { :issuer "gpxtrack"
+      :issuers
+      { "gpxtrack"
+        { :secret ""    ;; MUST BE SET!!!
+          :exp 3600000  ;; 1 hour
+          :leeway-seconds 5
+          :alg :HS256}}}}
+  ;
+  
+  :build
+  {
+    :appname    "gpxtrack"
+    :version    "dev.0.0"
+    :commit     "dev-commit-hash"
+    :timestamp  "1970-01-01T00:00:01+00:00"}}
+;;
