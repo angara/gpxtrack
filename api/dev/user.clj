@@ -4,7 +4,8 @@
     ;[criterium.core :refer [quick-bench]]
     [mount.core :refer [stop]]
     ;    
-    [gpt.main  :refer [-main]]))
+    [gpt.main  :refer [-main]]
+    [gpt.db.migration :as mg]))
 ;=
 
 (-main)
@@ -27,6 +28,7 @@
   (start)
   (stop)
   (reset)
+
 
   ,)
 

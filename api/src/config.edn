@@ -10,8 +10,7 @@
     :psql
     {
       :url ""      ;; MUST BE SET!!!
-      :init-db  false  
-      :migrate  true}
+      :init-db  false}  
   
     :jwt
     { :issuer "gpxtrack"

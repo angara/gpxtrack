@@ -5,7 +5,6 @@
   (:require
     [clojure.string     :refer  [split]]
     [clojure.java.shell :refer  [sh]]))
-
 ;=
 
 (defn cmd [& cmd-args]
@@ -57,6 +56,15 @@
      (.start)
      (.waitFor))
     nil)
+;;
+
+(defn exec-wait [cmd-vector]
+  (->
+    (ProcessBuilder. cmd-vector)
+    (.inheritIO)
+    (.start)
+    (.waitFor))
+  nil)
 ;;
 
 (defn exec-wait-env [cmd-vector env]

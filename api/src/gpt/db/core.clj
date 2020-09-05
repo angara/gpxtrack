@@ -1,13 +1,12 @@
 (ns gpt.db.core
   (:require
     [clojure.string       :refer  [starts-with?]]
-    [mount.core           :refer  [defstate]]
     [taoensso.timbre      :refer  [debug warn]]
+    [mount.core           :refer  [defstate]]    
     ;
     [next.jdbc            :refer  [with-transaction execute!]]
     [next.jdbc.result-set :refer  [as-unqualified-maps]]  ;; as-unqualified-arrays
     [next.jdbc.date-time  :refer  [read-as-local]]
-    [migratus.core        :as     migratus]
     ;
     [mlib.psql.conn       :refer  [pooled-datasource]]
     [mlib.psql.adapters]
@@ -29,22 +28,9 @@
   :start
     (let [ds (pooled-datasource
                 { :jdbcUrl      (-> cfg/psql :url prepend-jdbc)
-                  :auto-commit  false})        ;; for :fetch-size statement option)
-          ;
-          mcf { :db                   {:datasource ds}
-                :store                :database
-                :migration-dir        "migrations/"
-                :migration-table-name "migrations"
-                :init-script          "init.sql"}]
-      (alter-var-root #'*tx* (constantly ds))
+                  :auto-commit  false})]        ;; for :fetch-size statement option)
       (read-as-local)
-      (when (:init-db cfg/psql)
-        (debug "init-db")
-        (migratus/init mcf))
-      ;
-      (when (:migrate cfg/psql)
-        (debug "run migrations")
-        (migratus/migrate mcf))
+      (alter-var-root #'*tx* (constantly ds))
       ds)
   :stop
     (do

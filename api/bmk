@@ -4,23 +4,37 @@
 (babashka.classpath/add-classpath "./tools")
 
 (ns bmk.main
-  ;; (:import
-  ;;   [java.net URI URL])
   (:require
+    [clojure.string     :refer  [trim]]
     [clojure.edn        :refer  [read-string]]
-;    [clojure.java.shell :refer  [sh]]
-    [bmk.core :refer [print-lines cmd sh-c psql-interactive exec-wait-env]]))
+    [bmk.core :refer 
+      [ print-lines cmd sh-c psql-interactive 
+        exec-wait exec-wait-env
+        git-commit-hash iso-timestamp]]
+    [bmk.pom :refer [make-pom]]))
 ;=
 
 ;; - - - - - - - - constants - - - - - - - - - - -
 
+(def GROUP      "angara")
+(def APPNAME    "gpxtrack")
+(def VERSION    (-> "./VERSION" slurp trim))
+(def DESCR      "GPX Track backend")
+(def URL        "https://github.com/angara/gpxtrack")
+
 (def CONFIG_EDN "../../conf/dev.edn")
 (def DEV_RES    "./build/dev")
 (def PROD_RES   "./build/prod")
-  
+(def BUILD_EDN  (str PROD_RES "/build.edn"))
+(def POM_XML    "./pom.xml")
+
+(def UBER_JAR   "./target/gpxtrack.jar")
+(def MAIN       "gpt.main")
+
+;; - - - - - - - - command handlers - - - - - - - - - - -
 
 (defn read-dev-edn []
-  (-> "../../conf/dev.edn" slurp read-string))
+  (-> CONFIG_EDN slurp read-string))
 
 ;; - - - - - - - - command handlers - - - - - - - - - - -
 
@@ -32,13 +46,7 @@
                 "-o" (str publ "css/styles.css"))))
 ;;
 
-
 ; - - - - - - - - - - - - - - - - - - -
-
-
-;; nrepl: export CONFIG_EDN = ../conf/dev.edn
-;; nrepl:
-;;         clojure -A:dev:nrepl
 
 (defn nrepl [_]
   (println ["clojure" "-A:dev:nrepl"])
@@ -48,6 +56,36 @@
 
 ; - - - - - - - - - - - - - - - - - - -
 
+(defn build-edn []
+  { :appname APPNAME
+    :version VERSION
+    :commit     (git-commit-hash)
+    :timestamp  (iso-timestamp)})
+;-
+
+(defn uberjar [_]
+  (println "create uberjar:" UBER_JAR)
+  ;; (clean nil)
+  (cmd "mkdir" "-p" PROD_RES)
+  ;
+  (println "write:" BUILD_EDN)
+  (->> (build-edn) (spit BUILD_EDN))
+  ;
+  (println "write:" POM_XML)
+  (->> (make-pom GROUP APPNAME VERSION DESCR URL) (spit POM_XML))
+  ;
+  (exec-wait ["clojure" "-Spom"])
+  ;;
+  (let [cmd [ "clojure" 
+              "-A:depstar:uberjar" 
+              "-m" "hf.depstar.uberjar" 
+              "--jar" UBER_JAR 
+              "--main" MAIN  
+              "--compile"]]
+    (println "run:" cmd)
+    (exec-wait cmd)))
+
+; - - - - - - - - - - - - - - - - - - -
 
 (defn psql [_]
   (let [jdbc-url (-> (read-dev-edn) :gpxtrack :psql :url)]
@@ -68,10 +106,11 @@
 
 (def COMMANDS
   [
-    {:id :help    :handler help   :descr "display help"}
-    {:id :nrepl   :handler nrepl  :descr "nrepl with dev config"}
-    {:id :psql    :handler psql   :descr "exec psql with dev.edn config parameter"}
-    {:id :cssdev  :handler cssdev :descr "tailwind css processor in dev mode"}])
+    {:id :help    :handler help     :descr "display help"}
+    {:id :nrepl   :handler nrepl    :descr "nrepl with dev config"}
+    {:id :psql    :handler psql     :descr "exec psql with dev.edn config parameter"}
+    {:id :cssdev  :handler cssdev   :descr "tailwind css processor in dev mode"}
+    {:id :uberjar :handler uberjar  :descr "build uberjar"}])
 ;;
 
 (defn- find-command-handler [cmd]
@@ -98,7 +137,6 @@
 (main *command-line-args*)
   
 ;;.
-
 
 ; prod_assets:
 ;         @echo "prod assets"
