@@ -12,12 +12,13 @@
 (defn start []
   (-main))
 
-(defn reset []
-  (tnr/refresh :after 'restart))
-
 (defn restart []
   (stop)
   (start))
+
+(defn reset []
+  (tnr/refresh :after 'user/restart))
+
 
 (comment
   

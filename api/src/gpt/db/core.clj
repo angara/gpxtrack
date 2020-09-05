@@ -1,5 +1,6 @@
 (ns gpt.db.core
   (:require
+    [clojure.string       :refer  [starts-with?]]
     [mount.core           :refer  [defstate]]
     [taoensso.timbre      :refer  [debug warn]]
     ;
@@ -11,19 +12,30 @@
     [mlib.psql.conn       :refer  [pooled-datasource]]
     [mlib.psql.adapters]
     ;
-    [gtp.cfg              :as     cfg]))
+    [gpt.cfg              :as     cfg]))
 ;= 
 
 ;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
+
+(defn- prepend-jdbc [s]
+  (if-not (starts-with? s "jdbc:")
+    (str "jdbc:" s)
+    s))
+;-
 
 (def ^:dynamic *tx*)
 
 (defstate ds
   :start
     (let [ds (pooled-datasource
-                { :jdbcUrl      (:url cfg/psql)
+                { :jdbcUrl      (-> cfg/psql :url prepend-jdbc)
                   :auto-commit  false})        ;; for :fetch-size statement option)
-          mcf (:db {:connection ds})]
+          ;
+          mcf { :db                   {:datasource ds}
+                :store                :database
+                :migration-dir        "migrations/"
+                :migration-table-name "migrations"
+                :init-script          "init.sql"}]
       (alter-var-root #'*tx* (constantly ds))
       (read-as-local)
       (when (:init-db cfg/psql)

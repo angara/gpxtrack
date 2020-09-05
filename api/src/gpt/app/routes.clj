@@ -5,6 +5,7 @@
     ;[reitit.coercion.spec]
     [reitit.coercion.schema]
     ; [reitit.ring.spec :as spec]
+    [mlib.util              :refer  [not-blank?]]
     ;    
     [gpt.cfg                :as     cfg]
     [gpt.app.auth           :refer  [wrap-auth]])) ;wrap-require-user wrap-require-role user-login]]))
@@ -28,8 +29,13 @@
         :parameters 
           {:body 
             [:map
-              [:login string?] 
-              [:password string?]]}
+              {:closed true}
+              [:login 
+                {:title "Login" :description "User login" :json-schema/example "user-1"}
+                [:fn not-blank?]]
+              [:password 
+                {:title "Password" :description "not empty password" :json-schema/example "qwe123"}
+                [:fn not-blank?]]]}
         :post not-implemented}]])
     ;; ["/get-token"
     ;;   { :summary "get authorization token"

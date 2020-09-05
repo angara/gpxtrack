@@ -4,11 +4,11 @@
 (babashka.classpath/add-classpath "./tools")
 
 (ns bmk.main
-  (:import
-    [java.net URI URL])
+  ;; (:import
+  ;;   [java.net URI URL])
   (:require
     [clojure.edn        :refer  [read-string]]
-    [clojure.java.shell :refer  [sh]]
+;    [clojure.java.shell :refer  [sh]]
     [bmk.core :refer [print-lines cmd sh-c psql-interactive exec-wait-env]]))
 ;=
 
