@@ -7,16 +7,26 @@
     [gpt.spec.base          :as       b]))
 ;=
 
-;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
+; - - - - - - - - - - - - - - - - - - - 
 
-;; defined and checked in app/server
+(s/def  :cfg-http/max-body pos?)
+
 (s/def  ::http
-  (s/map-of keyword? any?))
+  (s/keys
+    :req-in [::b/host ::b/port]))
+
+; - - - - - - - - - - - - - - - - - - - 
+
+(s/def ::init-db boolean?)
+(s/def ::migrate boolean?)
 
 (s/def  ::psql
   (s/keys 
-    :req-un [::b/url]))
+    :req-un [::b/url]
+    :opt-un [::init-db ::migrate]))
 
+; - - - - - - - - - - - - - - - - - - - 
+;
 (s/def :jwt-config/exp  pos?)
 
 (s/def ::jwt-opts 
@@ -31,19 +41,17 @@
 (s/def ::jwt
   (s/keys :req-un [::issuer ::issuers]))
 
-(s/def  ::api-url   ::b/not-blank)
-(s/def  ::bearer    ::b/not-blank)
-(s/def  ::hostname  ::b/not-blank)
+; - - - - - - - - - - - - - - - - - - - 
 
-(s/def ::gpt
+(s/def ::gpxtrack
   (s/keys
-    :req-un [::psql ::jwt]))    ;; XXX
+    :req-un [::psql ::jwt ::http]))
 
 (s/def  ::conf
   (s/keys
-    :req-un [::gpt ::build]))
+    :req-un [::gpxtrack ::build]))
 
-;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
+; - - - - - - - - - - - - - - - - - - - 
 
 (declare  app)
 (declare  build)
@@ -52,8 +60,8 @@
 (defstate conf
   :start
     (let [conf (b/conform! ::conf (apply deep-merge (args)))]
-      (alter-var-root #'app   (constantly (:gpt conf)))
+      (alter-var-root #'app   (constantly (:gpxtrack conf)))
       (alter-var-root #'build (constantly (:build conf)))
-      (alter-var-root #'psql  (constantly (-> conf :gpt :psql)))
+      (alter-var-root #'psql  (constantly (-> conf :gpxtrack :psql)))
       conf))
 ;=

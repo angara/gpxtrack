@@ -41,3 +41,30 @@
 (defn iso-timestamp []
   (.format (DateTimeFormatter/ofPattern "yyyy-MM-dd'T'HH:mm:ssX") (ZonedDateTime/now)))
 ;;
+
+(defn- set-process-env [pb env]
+  (when env
+    (let [pe (.environment pb)]
+      (doseq [[k v] env]
+        (.put pe (name k) (str v)))))
+  pb)
+;-
+
+(defn psql-interactive [url]
+    (->
+     (ProcessBuilder. ["psql" url])
+     (.inheritIO)
+     (.start)
+     (.waitFor))
+    nil)
+;;
+
+(defn exec-wait-env [cmd-vector env]
+  (->
+    (ProcessBuilder. cmd-vector)
+    (set-process-env env)
+    (.inheritIO)
+    (.start)
+    (.waitFor))
+  nil)
+;;

@@ -3,7 +3,7 @@
   :dependencies 
   [
     [reagent "1.0.0-alpha2" :exclusions [react react-dom]]
-    [re-frame "1.0.0"]
+    [re-frame "1.1.1"]
     [com.taoensso/timbre "4.10.0"]
     [cljs-ajax "0.8.1"]]
   ;

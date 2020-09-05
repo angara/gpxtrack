@@ -1,17 +1,15 @@
 (ns gpt.main
   (:gen-class)
   (:require
-    [mount.core         :refer  [start-with-args]]
     [taoensso.timbre    :refer  [debug info warn] :as timbre]
+    [mount.core         :refer  [start-with-args]]
     ;;
     [mlib.config.core   :refer  [load-configs]]
     ; [mlib.thread        :refer  [join]]
     ;;
-    [oncab.cfg        :refer  [build]]
-    [oncab.app.server]))
+    [gpt.cfg            :refer  [build]]
+    [gpt.app.server]))
 ;=
-
-;; XXX: run migrations
 
 (defn -main []
   (info "init...")

@@ -4,9 +4,14 @@
     :http
     {
       :host "localhost"
-      :port 8020}
+      :port 8020
+      :max-body 20000000}   ;; 20 M
 
-    :psql {:url ""}      ;; MUST BE SET!!!
+    :psql
+    {
+      :url ""      ;; MUST BE SET!!!
+      :init-db  false  
+      :migrate  true}
   
     :jwt
     { :issuer "gpxtrack"
