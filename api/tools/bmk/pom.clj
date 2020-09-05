@@ -23,19 +23,3 @@
     (xml/sexp-as-element)
     (xml/emit-str)))
 ;;
-
-
-        ;; (xml/element :project {:xmlns "http://maven.apache.org/POM/4.0.0"}
-        ;;   (xml/element :modelVersion {} "4.0.0")
-        ;;   (xml/element :groupId {} group)
-        ;;   (xml/element :artefactId {} artefact)
-        ;;   (xml/element :version {} version)
-        ;;   (xml/element :description {} descr)
-        ;;   (xml/element :url {} url)
-        ;;   (xml/element :scm {}
-        ;;     (xml/element :url {} url))
-        ;;   (xml/element :properties {}
-        ;;     (xml/element :maven.compiler.source {} "11")
-        ;;     (xml/element :maven.compiler.target {} "11"))
-        ;;   (xml/element :build {}
-        ;;     (xml/element :sourceDirectory {} "src")))]

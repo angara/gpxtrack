@@ -28,7 +28,7 @@
 
 (defn print-lines [lines]
   (cond
-    (seq lines )        (doseq [l lines] (println l))    
+    (seq? lines)        (doseq [l lines] (println l))    
     (not (nil? lines))  (println lines)
     :else               nil))
 ;;
@@ -58,13 +58,18 @@
     nil)
 ;;
 
+(defn check-exit! [val] 
+  (if (= 0 val)
+    true
+    (die (str "error code: " val))))
+
 (defn exec-wait [cmd-vector]
   (->
     (ProcessBuilder. cmd-vector)
     (.inheritIO)
     (.start)
-    (.waitFor))
-  nil)
+    (.waitFor)
+    (check-exit!)))
 ;;
 
 (defn exec-wait-env [cmd-vector env]
@@ -73,6 +78,6 @@
     (set-process-env env)
     (.inheritIO)
     (.start)
-    (.waitFor))
-  nil)
+    (.waitFor)
+    (check-exit!)))
 ;;
