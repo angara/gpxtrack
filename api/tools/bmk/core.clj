@@ -63,16 +63,7 @@
     true
     (die (str "error code: " val))))
 
-(defn exec-wait [cmd-vector]
-  (->
-    (ProcessBuilder. cmd-vector)
-    (.inheritIO)
-    (.start)
-    (.waitFor)
-    (check-exit!)))
-;;
-
-(defn exec-wait-env [cmd-vector env]
+(defn exec-wait [cmd-vector & [env]]
   (->
     (ProcessBuilder. cmd-vector)
     (set-process-env env)

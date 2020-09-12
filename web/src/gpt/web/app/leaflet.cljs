@@ -1,8 +1,10 @@
 (ns gpt.web.app.leaflet
   (:require
    [taoensso.timbre  :refer-macros [debug]]
+   [reagent.core     :refer [create-class]]
    [re-frame.core    :as rf]
-   ["react-leaflet"  :refer [Map TileLayer ZoomControl Marker Popup]]))
+   ["leaflet" :refer [Map TileLayer]]))
+   ;["react-leaflet"  :refer [Map TileLayer ZoomControl Marker Popup]]))
     ;
   ;;  [gpt.web.const       :refer  [VIEW_DASHBOARD VIEW_DOCLIST]]
   ;;  [gpt.web.lib.icons   :as     icons]
@@ -19,15 +21,27 @@
 ;-
 
 (defn map-panel []
-  [:> Map
-    { :class "h-full"
-      :center {:lon 104.2479 :lat 52.2752} 
-      :zoom 9
-      ;:on-mouse-move (fn [evt] (debug (-> evt .-latlng)))
-      :on-click #(rf/dispatch [::map-click (evt->latlon %)])}
-    [:> TileLayer
-      {:attribution "&copy; OpenStreetMap"
-        :url "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}]])
+
+  (create-class
+    { :display-name "LeafletMap"
+      :component-did-mount
+        (fn [this]
+          (let [map (Map. "leaflet-map")]
+            (.setView map #js [52.2752 104.2479] 9)
+            (print "did-mount:" this)))
+      :reagent-render
+        (fn []
+          [:div {:class "h-full" :id "leaflet-map"}])}))
+
+  ; [:> Map
+  ;   { :class "h-full"
+  ;     :center {:lon 104.2479 :lat 52.2752} 
+  ;     :zoom 9
+  ;     ;:on-mouse-move (fn [evt] (debug (-> evt .-latlng)))
+  ;     :on-click #(rf/dispatch [::map-click (evt->latlon %)])}
+  ;   [:> TileLayer
+  ;     {:attribution "&copy; OpenStreetMap"
+  ;       :url "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}]])
     ;[:> ZoomControl {:position "topright"}]])
     ;; (for [m markers :let [id (:id m)]]
     ;;   ^{:key id}

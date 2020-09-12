@@ -29,7 +29,8 @@
   (stop)
   (reset)
 
-
+  (mg/rollback)
+  
   ,)
 
 ;;.

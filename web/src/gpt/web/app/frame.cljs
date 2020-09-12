@@ -94,7 +94,7 @@
       [:div.flex-grow.px-2.mb-1 
         [track-list]]]
       ;[:footer.flex-1.flex-grow-0 [left-footer]]]
-    [:div.bg-green-300.flex-grow.relative
+    [:div.bg-gray-200.flex-grow.relative
       [map-panel]
       [coords-bar]]
     [user-bar]

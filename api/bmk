@@ -8,8 +8,7 @@
     [clojure.string     :refer  [trim]]
     [clojure.edn        :refer  [read-string]]
     [bmk.core :refer 
-      [ print-lines cmd sh-c psql-interactive 
-        exec-wait exec-wait-env
+      [ print-lines cmd sh-c psql-interactive exec-wait
         git-commit-hash iso-timestamp]]
     [bmk.pom :refer [make-pom]]))
 ;=
@@ -50,7 +49,7 @@
 
 (defn nrepl [_]
   (println ["clojure" "-A:dev:nrepl"])
-  (exec-wait-env 
+  (exec-wait
     ["clojure" "-A:dev:nrepl"] 
     {:CONFIG_EDN CONFIG_EDN}))
 
