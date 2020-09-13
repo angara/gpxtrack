@@ -2,7 +2,7 @@
   (:require
     [taoensso.timbre  :refer-macros [debug]]
     [re-frame.core    :as rf]
-    ["react-leaflet"  :refer [Map TileLayer Marker Popup]]
+    ["leaflet"        :refer [Map TileLayer Marker Popup]]
     ;
     [gpt.web.const       :refer  [VIEW_DASHBOARD VIEW_DOCLIST]]    
     [gpt.web.lib.icons   :as     icons]

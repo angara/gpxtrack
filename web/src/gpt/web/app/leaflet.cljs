@@ -20,15 +20,22 @@
       :lon (-> coords .-lng)}))
 ;-
 
+(defonce *map (atom nil))
+
 (defn map-panel []
 
   (create-class
     { :display-name "LeafletMap"
       :component-did-mount
-        (fn [this]
-          (let [map (Map. "leaflet-map")]
+        (fn [_]
+          (let [map   (reset! *map (Map. "leaflet-map"))
+                layer (TileLayer. 
+                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        #js { :attribution "&copy; OpenStreetMap"})]
+            ;
             (.setView map #js [52.2752 104.2479] 9)
-            (print "did-mount:" this)))
+            (.addTo layer map)))
+
       :reagent-render
         (fn []
           [:div {:class "h-full" :id "leaflet-map"}])}))
