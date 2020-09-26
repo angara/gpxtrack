@@ -3,7 +3,7 @@
    [taoensso.timbre  :refer-macros [debug]]
    [reagent.core     :refer [create-class]]
    [re-frame.core    :as rf]
-   ["leaflet" :refer [Map TileLayer]]))
+   ["leaflet" :refer [Map TileLayer Polyline]]))
    ;["react-leaflet"  :refer [Map TileLayer ZoomControl Marker Popup]]))
     ;
   ;;  [gpt.web.const       :refer  [VIEW_DASHBOARD VIEW_DOCLIST]]
@@ -22,6 +22,7 @@
 
 (defonce *map (atom nil))
 
+
 (defn map-panel []
 
   (create-class
@@ -31,10 +32,20 @@
           (let [map   (reset! *map (Map. "leaflet-map"))
                 layer (TileLayer. 
                         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        #js { :attribution "&copy; OpenStreetMap"})]
+                        #js {:attribution "&copy; OpenStreetMap"})
+                pline-data    
+                [
+                  [52.2 104.04]
+                  [52.25 104.24]
+                  [52.3 104.34]]
+                pline (Polyline. (clj->js pline-data) #js {:color "#4585ed" :weight 2})]
             ;
             (.setView map #js [52.2752 104.2479] 9)
-            (.addTo layer map)))
+            (.addTo layer map)
+            (.addTo pline map)
+            ;
+            (.on map "click"
+                #(rf/dispatch [::map-click (evt->latlon %)]))))
 
       :reagent-render
         (fn []

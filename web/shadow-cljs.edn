@@ -4,7 +4,7 @@
   [
     [reagent "1.0.0-alpha2" :exclusions [react react-dom]]
     [re-frame "1.1.1"]
-    [com.taoensso/timbre "4.10.0"]
+    [com.taoensso/timbre "5.0.1"]
     [cljs-ajax "0.8.1"]]
   ;
   :dev-http {8080 "build/dev/public/"}

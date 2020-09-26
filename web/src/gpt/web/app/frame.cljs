@@ -18,7 +18,7 @@
 (defn gpxtrack-bar []
   [:div.text-2xl.text-center.p-1.font-semibold.tracking-wider.border-b
     [:div
-      {:style {:filter "drop-shadow(1px 1px 0.7px rgba(0,0,0,0.5))"}}
+      {:style {:filter "drop-shadow(1px 1px 0.7px rgba(0,0,0,0.24))"}}
       [:span.text-indigo-400 "GPX"] 
       [:span.text-indigo-700.mx-2 "Track"]]])
       ;[:span.text-indigo-400.inline-block (icons/location)]]])
