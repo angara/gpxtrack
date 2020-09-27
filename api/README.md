@@ -1,6 +1,45 @@
 # GPX Track: API
 
+## Objects
+
+## Types
+
+- `ct` - creation time in milliseconds
+- `ts` - timestamp (modification) in milliseconds
+
+## API
+
+- **/api/auth/login/by-code**
+  - params:
+    - `authcode` short lived chars to match Telegram /authcode
+  - return:
+    - `user` {id,roles, ...}
+    - `jwt`  authorization bearer
+- **/api/auth/logout/before-now** - revoke tokens issued before time
+  - ctx: `user`
+  - params:
+    - `ts` - reject tokens issued bafore
+  - return:
+    - `ok`
+
+- **/api/track/by-id**
+  - params:
+    - `id`
+  - return:
+    - `{... track info ...}`
+- **/api/track/find**
+  - params:
+- **/api/track/upload** - multipart
+  - ctx: `user`
+  - params:
+    - `filename`
+    - `title?`
+    - `descr?`
+  - return:
+    - `track_id`
+
 ## Database
+
 
 ### misc
 
@@ -28,3 +67,11 @@ Options:
 :queue-size: max requests queued waiting for thread pool to compute response before rejecting, 503(Service Unavailable) is returned to client if queue is full, default to 20K
 :max-body: length limit for request body in bytes, 413(Request Entity Too Large) is returned if request exceeds this limit, default to 8388608(8M)
 :max-line: length limit for HTTP initial line and per header, 414(Request-URI Too Long) will be returned if exceeding this limit, default to 8192(8K), relevant discussion on Stack Overflow
+
+### strava
+
+- <http://developers.strava.com/docs/reference/>
+- <https://www.strava.com/settings/api>
+- <https://developers.strava.com/playground/>
+
+

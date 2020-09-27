@@ -22,6 +22,7 @@
 (defn auth-routes []
   ["/auth"
     {:swagger {:tags ["Authorization"]}}
+    
     ["/user-login"
       { :summary "login user, create jwt"
         :description "create new JWT token for registered user using login and password, 
