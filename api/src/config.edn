@@ -11,7 +11,9 @@
     {
       :url ""      ;; MUST BE SET!!!
       :init-db  false}  
-  
+    ;
+    :bucket "gpxtrack"
+
     :jwt
     { :issuer "gpxtrack"
       :issuers
@@ -22,6 +24,8 @@
           :alg :HS256}}}}
   ;
   
+  :minio {:url "" :access-key "" :secret-key ""}
+
   :build
   {
     :appname    "gpxtrack"

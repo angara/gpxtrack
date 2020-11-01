@@ -43,25 +43,38 @@
 
 ; - - - - - - - - - - - - - - - - - - - 
 
+(s/def ::bucket ::b/not-blank)
+
 (s/def ::gpxtrack
   (s/keys
-    :req-un [::psql ::jwt ::http]))
+    :req-un [::psql ::jwt ::http ::bucket]))
+
+; - - - - - - - - - - - - - - - - - - - 
+
+(s/def ::access-key ::b/not-blank)
+(s/def ::secret-key ::b/not-blank)
+
+(s/def ::minio
+  (s/keys
+    :req-un [::b/url ::access-key ::secret-key]))
 
 (s/def  ::conf
   (s/keys
-    :req-un [::gpxtrack ::build]))
+    :req-un [::gpxtrack ::build ::minio]))
 
 ; - - - - - - - - - - - - - - - - - - - 
 
 (declare  app)
 (declare  build)
 (declare  psql)
+(declare  minio)
 
 (defstate conf
   :start
     (let [conf (b/conform! ::conf (apply deep-merge (args)))]
       (alter-var-root #'app   (constantly (:gpxtrack conf)))
       (alter-var-root #'build (constantly (:build conf)))
+      (alter-var-root #'minio (constantly (-> conf :minio)))
       (alter-var-root #'psql  (constantly (-> conf :gpxtrack :psql)))
       conf))
 ;=

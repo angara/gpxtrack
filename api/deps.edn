@@ -9,34 +9,35 @@
 
     metosin/spec-tools        {:mvn/version "0.10.4"}
     metosin/jsonista          {:mvn/version "0.2.7"}
-    metosin/reitit            {:mvn/version "0.5.6"}
-    metosin/malli             {:mvn/version "0.0.1-SNAPSHOT"}   ;; malli-0.0.1-20200719.212415-23
+    metosin/reitit            {:mvn/version "0.5.10"}
+    metosin/malli             {:mvn/version "0.2.1"}
 
     mount                     {:mvn/version "0.1.16"}
     javax.servlet/servlet-api {:mvn/version "2.5"}
     http-kit                  {:mvn/version "2.5.0"}
     hiccup                    {:mvn/version "1.0.5"}
-    
-    ring/ring-core            {:mvn/version "1.8.1"}
-    
+    ring/ring-core            {:mvn/version "1.8.2"}
+    ;
+    io.minio/minio            {:mvn/version "7.1.4"}
+    ;
     ;; psql:
-    org.postgresql/postgresql {:mvn/version "42.2.16"}
+    org.postgresql/postgresql {:mvn/version "42.2.18"}
     com.zaxxer/HikariCP       {:mvn/version "3.4.5"}
-    seancorfield/next.jdbc    {:mvn/version "1.1.588"}
+    seancorfield/next.jdbc    {:mvn/version "1.1.610"}
     honeysql                  {:mvn/version "1.0.444"}
     nilenso/honeysql-postgres {:mvn/version "0.2.6"}
-    migratus                  {:mvn/version "1.3.0"}
+    migratus                  {:mvn/version "1.3.2"}
   
-    com.taoensso/timbre       {:mvn/version "5.0.1"}
-    com.fzakaria/slf4j-timbre {:mvn/version "0.3.19"}
-    ;;     
+    com.taoensso/timbre       {:mvn/version "5.1.0"}
+    com.fzakaria/slf4j-timbre {:mvn/version "0.3.20"}
+    ;;
 
     ;; https://github.com/ovotech/ring-jwt
     ovotech/ring-jwt          {:mvn/version "2.0.0"}}
 
     ;; https://github.com/auth0/java-jwt
     ;; com.auth0/java-jwt {:mvn/version "3.10.3"}   ;; already imported in ring-jwt
-    
+
     ;; example
     ;; mlib-clj {:local/root "/path/to/mlib-clj"}}
   ;
@@ -49,7 +50,7 @@
       :extra-paths ["dev" "resources" "build/dev"]
       :extra-deps 
       {
-        clj-kondo                   {:mvn/version "2020.09.29"}
+        clj-kondo                   {:mvn/version "2020.10.10"}
         org.clojure/tools.namespace {:mvn/version "1.0.0"}
         criterium/criterium         {:mvn/version "0.4.6"}}}
     ;
@@ -57,13 +58,13 @@
     :nrepl
     {
       :extra-deps
-        { nrepl/nrepl                 {:mvn/version "0.8.2"}
-          cider/cider-nrepl           {:mvn/version "0.25.3"}}
+        { nrepl/nrepl                 {:mvn/version "0.8.3"}
+          cider/cider-nrepl           {:mvn/version "0.25.4"}}
       :main-opts
         ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
 
     ;; https://github.com/seancorfield/depstar
-    :depstar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.117"}}}
+    :depstar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.132"}}}
     :uberjar {:extra-paths ["resources" "build/prod"]}}
 
   ;; ;; ;; ;;

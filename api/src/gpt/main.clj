@@ -21,7 +21,17 @@
   (info "init...")
 
   (timbre/merge-config!
-    {:output-fn (partial timbre/default-output-fn {:stacktrace-fonts {}})})
+    {:output-fn (partial timbre/default-output-fn {:stacktrace-fonts {}})
+     :min-level [
+                  [#{ "org.eclipse.jetty.*"
+                      "org.graylog2.gelfclient.*"
+                      "com.zaxxer.hikari.*"
+                      "org.mongodb.driver.*"
+                      "io.netty.*"} :info]
+                  ;
+                  [#{"*"} :debug]
+                  ;
+                  ,]})
 
   (let [mounted (start-with-args (load-configs))]
     (info "main:" (merge build mounted))))
