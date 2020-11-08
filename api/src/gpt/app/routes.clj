@@ -38,6 +38,10 @@
                 {:title "Password" :description "not empty password" :json-schema/example "qwe123"}
                 [:fn not-blank?]]]}
         :post not-implemented}]])
+
+    ;; /code/generate
+    ;; /code/token    ;; get token from authcode
+
     ;; ["/get-token"
     ;;   { :summary "get authorization token"
     ;;     :description "create new JWT token for registered user using login and password (as user-login)"

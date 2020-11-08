@@ -34,6 +34,8 @@
           (.object name)
           (.stream data -1 PART_SIZE))]
           ;; (.contentType "...")
+          ;; (.headers headers)
+          ;; (.userMetadata userMetadata)
     (.putObject client (.build args))))
 ;;
 
@@ -52,5 +54,5 @@
   (let [data "qwertyasdf 123423452345"
         bais (java.io.ByteArrayInputStream. (.getBytes data "UTF-8"))]
     (put-object minio (:bucket cfg/app) "test2" bais))
-    
+
   ,)

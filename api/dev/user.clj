@@ -3,6 +3,7 @@
     [clojure.tools.namespace.repl :as tnr]
     ;[criterium.core :refer [quick-bench]]
     [mount.core :refer [stop]]
+    [hashp.core]
     ;    
     [gpt.main  :refer [-main]]
     [gpt.db.migration :as mg]))
@@ -23,6 +24,8 @@
 
 (comment
   
+  (let [a #p {:b :c}])
+
   (try (restart) (catch Exception _ _))
 
   (start)

@@ -51,6 +51,10 @@
 (defn exec! [stmt]
   (execute! *tx* stmt EXEC_OPTS))
 
+(defn exec-one! [stmt]
+  (first
+    (execute! *tx* stmt EXEC_OPTS)))
+
 ;; ;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
 
 (def ^:const LIMIT_DEFAULT 10000)
