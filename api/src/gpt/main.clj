@@ -2,9 +2,8 @@
   (:gen-class)
   (:require
     [taoensso.timbre    :refer  [debug info warn] :as timbre]
-    [mount.core         :refer  [start-with-args defstate]]
+    [mount.core         :refer  [defstate start stop]]
     ;;
-    [mlib.config.core   :refer  [load-configs]]
     ; [mlib.thread        :refer  [join]]
     ;;
     [gpt.cfg            :refer  [build]]
@@ -18,7 +17,7 @@
 ;-
 
 (defn -main []
-  (info "init...")
+  (info "init main")
 
   (timbre/merge-config!
     {:output-fn (partial timbre/default-output-fn {:stacktrace-fonts {}})
@@ -33,8 +32,12 @@
                   ;
                   ,]})
 
-  (let [mounted (start-with-args (load-configs))]
-    (info "main:" (merge build mounted))))
-
-  ; (info "exiting:" (join worker)))
+  (try
+    (let [mounted (start)]
+      (info "main started:" (merge build mounted)))
+      ; (info "exiting:" (join worker)))
+    (catch Throwable ex
+      (warn ex "main interrupted")
+      (stop)))
+  ,)
 ;;

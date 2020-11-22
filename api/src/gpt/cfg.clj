@@ -1,8 +1,10 @@
 (ns gpt.cfg
   (:require
     [clojure.spec.alpha     :as       s]
+    [clojure.edn            :as       edn]
+    [cprop.core             :refer    [load-config]]
+    [cprop.source           :refer    [from-resource from-env]]
     [mount.core             :refer    [defstate args]]
-    [medley.core            :refer    [deep-merge]]
     [ring.middleware.token  :as       token]
     [gpt.spec.base          :as       b]))
 ;=
@@ -69,12 +71,21 @@
 (declare  psql)
 (declare  minio)
 
-(defstate conf
+(defstate config
   :start
-    (let [conf (b/conform! ::conf (apply deep-merge (args)))]
+    (let [conf (->> 
+                  [ {:build (from-resource "build.edn")}
+                    (when-let [cf (System/getenv "CONFIG_EDN")]
+                      (-> cf slurp edn/read-string))
+                    (from-env)
+                    (args)]
+                  (load-config :merge)
+                  (b/conform! ::conf))]
+      ;
       (alter-var-root #'app   (constantly (:gpxtrack conf)))
       (alter-var-root #'build (constantly (:build conf)))
       (alter-var-root #'minio (constantly (-> conf :minio)))
       (alter-var-root #'psql  (constantly (-> conf :gpxtrack :psql)))
+      ;
       conf))
 ;=
