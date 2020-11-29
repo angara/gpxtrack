@@ -74,4 +74,3 @@ Options:
 - <https://www.strava.com/settings/api>
 - <https://developers.strava.com/playground/>
 
-

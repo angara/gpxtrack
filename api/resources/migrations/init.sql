@@ -42,3 +42,20 @@ create table user_authcode (
 
 -- -- -- -- -- -- -- -- -- -- -- -- --
 
+create table track_info (
+  track_id  bigserial primary key,
+  user_id   varchar(80) not null references user_base(user_id)
+
+  -- num_points
+
+  -- orig_file    -- S3 url
+  -- orig_size
+  -- orig_hash
+);
+-- track: id, user, start time, distance, elevation, descr
+
+
+-- track_tag, group, alias
+
+-- track_point: id, track_id, seq, lat, lon, elev, point (geography), 
+

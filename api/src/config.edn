@@ -21,7 +21,13 @@
         { :secret ""    ;; MUST BE SET!!!
           :exp 3600000  ;; 1 hour
           :leeway-seconds 5
-          :alg :HS256}}}}
+          :alg :HS256}}}
+    ;
+    :telegram
+    {
+      :botname ""
+      :apikey ""}}
+    
   ;
   
   :minio {:url "" :access-key "" :secret-key ""}
