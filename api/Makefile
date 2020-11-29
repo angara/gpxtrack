@@ -30,6 +30,9 @@ COMMIT ?= $(shell git rev-parse HEAD)
 
 .PHONY: dev nrepl clean javac inc-minor bump shapshot release uberjar
 
+psql:
+	@(set -a && source ${DEV_ENV} && psql "$${GPXTRACK__PSQL__URL}")
+
 build_edn: VERSION
 	mkdir -p ${UBER_RES}
 	@echo "{">${BUILD_EDN}

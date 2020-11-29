@@ -22,13 +22,12 @@ create table user_base (
 
 create table user_auth (
   auth_type varchar(40) not null,   -- "login", "tg", "vb", "vk", ... ?"phone"
-  auth_id   varchar(80) not null,   -- msgr_user_id, loing, email, phone, ....
-  user_id   varchar(80) not null,
+  auth_id   varchar(80) not null,   -- msgr_user_id, login, email, phone, ....
+  user_id   varchar(80) not null references user_base(user_id),
   passhash  varchar(200),
-  ct        bigint not null default now_ms(),
+  ts        bigint not null default now_ms(),
   --
-  primary key (auth_type, auth_id),
-  foreign key (user_id) references user_base(user_id)
+  primary key (auth_id, auth_type)
 );
 
 create index user_auth_user_idx on user_auth (user_id);
