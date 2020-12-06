@@ -83,4 +83,7 @@ clean:
 	rm -rf ${UBER_RES}
 	rm -rf ${UBER_JAR}
 
+outdated:
+	@(clojure -Sdeps '{:deps {antq/antq {:mvn/version "RELEASE"}}}' -m antq.core || exit 0)
+
 #.
