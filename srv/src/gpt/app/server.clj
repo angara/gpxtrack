@@ -47,7 +47,7 @@
   {"Access-Control-Allow-Origin"   "*"
    "Access-Control-Allow-Methods"  "GET, POST, OPTIONS"
    "Access-Control-Allow-Headers"  "Content-Type, Authorization"
-   "Access-Control-Expose-Headers" "X-ServerTime, X-ServerName, *"})
+   "Access-Control-Expose-Headers" "*"})
 ;-
 
 (defn wrap-cors [handler]
@@ -70,33 +70,41 @@
 
 ;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
 
-(defn make-handler []
+(defn- swagger-json-route [appname version]
+  ["/swagger.json"
+    {:get 
+      { :no-doc  true
+        :handler (swagger/create-swagger-handler)
+        :swagger { :info
+                    { :title        appname
+                      :version      version
+                      :description  (str appname " api explorer")}
+                    :securityDefinitions
+                    { :authorization
+                      { :type "apiKey"
+                        :name "Authorization"
+                        :in   "header"}}}}}])
+  ;;
+
+(defn- swagger-ui-handler []
+  (swagger-ui/create-swagger-ui-handler
+    {:path "/swagger"
+      :config {:validatorUrl nil :operationsSorter "alpha"}}))
+;;
+
+
+(defn- index-html-route []
+  ["/" {:get
+          { :no-doc true
+            :handler (fn [_] 
+                      (-> "public/index.html"
+                          (resource-response {})
+                          (content-type "text/html;charset=utf-8")))}}])
+;;
+
+(defn make-handler [route-list]
   (ring/ring-handler
-    (ring/router
-      [
-        ["/swagger.json"
-         {:get {:no-doc true
-                :swagger {:info   
-                            {:title   (:appname cfg/build)
-                             :version (:version cfg/build)
-                             :description "gpxtrack api explorer"}
-                          :securityDefinitions
-                            {:authorization
-                                {:type "apiKey"
-                                  :name "Authorization"
-                                  :in   "header"}}}
-                ;
-                :handler (swagger/create-swagger-handler)}}]
-        ;
-        (api-routes)
-        ;
-        ["/" {:get
-               { :no-doc true
-                 :handler (fn [_] 
-                            (-> "public/index.html"
-                                (resource-response {})
-                                (content-type "text/html;charset=utf-8")))}}]]
-      ;;
+    (ring/router route-list
       {
         ;;:reitit.middleware/transform dev/print-request-diffs ;; pretty diffs
         ;;:validate spec/validate ;; enable spec validation for route data
@@ -119,42 +127,44 @@
               multipart/multipart-middleware]}})                      
     ;;
     (ring/routes
-      (swagger-ui/create-swagger-ui-handler
-        {:path "/swagger"
-         :config {:validatorUrl nil :operationsSorter "alpha"}})
-      ;
+      (swagger-ui-handler)
       (ring/create-resource-handler {:path "/" :root "public"})
       (ring/create-default-handler))))
 ;;
 
 (comment
 
-  (resource-response "public/index.html")
+  (resource-response "public/index.html"))
 
-  (def app (make-handler))
+  ;; (def app (make-handler))
 
-  (app
-    { :uri "/api/test/qwe"
-      :request-method :get
-      :query-params {"x" "1", "y" "fail"}}))
+  ; (app
+  ;   { :uri "/api/test/qwe"
+  ;     :request-method :get
+  ;     :query-params {"x" "1", "y" "fail"}}))
 
 
 ;; https://github.com/http-kit/http-kit/blob/master/src/org/httpkit/server.clj      
 ;; 
 (defstate server
   :start
-    (let [server-name (str (:appname cfg/build) " " (:version cfg/build))
-          cf (:http cfg/app)
+    (let [appname (:appname cfg/build)
+          version (:version cfg/build)
+          cf      (:http    cfg/app)
           cf (assoc cf 
               :ip                   (:host cf) 
               :worker-name-prefix   "http-kit-"
               :server-header        nil
-              :legacy-return-value? false)]
+              :legacy-return-value? false)
+          route-list
+            (concat
+              [(swagger-json-route appname version)]
+              [(index-html-route)])]
       ;
       (debug "http-kit.listener" cf)
-      (->
+      (-> route-list
         (make-handler)
-        (wrap-server-name server-name)
+        (wrap-server-name (str appname " " version))
         (run-server cf)))
   ;
   :stop

@@ -46,9 +46,8 @@ pom: VERSION deps.edn
 	@cat tools/pom-template.xml | envsubst > pom.xml
 	@clojure -Spom
 
-dev: export CONFIG_EDN = ${DEV_CONFIG}
 dev:
-	set -a && source ${DEV_ENV} && clojure -A:dev:nrepl
+	set -a && CONFIG_EDN=${DEV_CONFIG} && source ${DEV_ENV} && clojure -A:dev:nrepl
 
 javac:
 	javac ${JAVA_SRC}/mlib_org/mindrot/jbcrypt/BCrypt.java
