@@ -17,7 +17,7 @@
     ring/ring-core            {:mvn/version "1.8.2"}
     hiccup/hiccup             {:mvn/version "1.0.5"}
     ;
-    io.minio/minio            {:mvn/version "8.0.2"}
+    io.minio/minio            {:mvn/version "8.0.3"}
     ;
     ;; psql:
     org.postgresql/postgresql {:mvn/version "42.2.18"}
@@ -32,7 +32,7 @@
     ;;
 
     ;; https://github.com/ovotech/ring-jwt
-    ovotech/ring-jwt          {:mvn/version "2.0.0"}}
+    ovotech/ring-jwt          {:mvn/version "2.0.2"}}
 
     ;; https://github.com/auth0/java-jwt
     ;; com.auth0/java-jwt {:mvn/version "3.10.3"}   ;; already imported in ring-jwt
@@ -49,9 +49,9 @@
       :extra-paths ["dev" "resources" "target/resources"]
       :extra-deps 
       {
-        clj-kondo/clj-kondo         {:mvn/version "2020.11.07"}
+        clj-kondo/clj-kondo         {:mvn/version "2020.12.12"}
         hashp/hashp                 {:mvn/version "0.2.0"}
-        org.clojure/tools.namespace {:mvn/version "1.0.0"}
+        org.clojure/tools.namespace {:mvn/version "1.1.0"}
         criterium/criterium         {:mvn/version "0.4.6"}}}
     ;
 

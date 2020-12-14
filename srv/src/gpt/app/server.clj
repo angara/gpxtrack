@@ -7,7 +7,6 @@
     [ring.util.response       :refer  [resource-response content-type]]
     [reitit.ring              :as     ring]
     [reitit.coercion          :refer  [compile-request-coercers]]
-    ;[reitit.coercion.spec]
     [reitit.coercion.malli]
     ;
     [reitit.swagger :as swagger]
@@ -18,11 +17,7 @@
     [reitit.ring.middleware.exception   :as exception]
     [reitit.ring.middleware.multipart   :as multipart]
     [reitit.ring.middleware.parameters  :as parameters]
-            
-            ; [reitit.ring.middleware.dev :as dev]
-            ; [reitit.ring.spec :as spec]
-            ; [spec-tools.spell :as spell]
-    
+    ;
     [muuntaja.core]
     ;    
     [gpt.cfg                :as     cfg]
@@ -60,12 +55,11 @@
 ;;
 
 (defn wrap-server-name [handler server-name]
-  (fn [req]
-    (->
-     (handler req)
-     (update :headers merge
-             {"X-ServerName"  server-name
-              "X-ServerTime"  (str (System/currentTimeMillis))}))))
+   #(-> %
+      (handler)
+      (update :headers merge
+        { "X-ServerName"  server-name
+          "X-ServerTime"  (str (System/currentTimeMillis))})))
 ;;
 
 ;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
@@ -88,8 +82,7 @@
 
 (defn- swagger-ui-handler []
   (swagger-ui/create-swagger-ui-handler
-    {:path "/swagger"
-      :config {:validatorUrl nil :operationsSorter "alpha"}}))
+    {:path "/swagger" :config {:validatorUrl nil :operationsSorter "alpha"}}))
 ;;
 
 
@@ -104,7 +97,8 @@
 
 (defn make-handler [route-list]
   (ring/ring-handler
-    (ring/router route-list
+    (ring/router 
+      route-list
       {
         ;;:reitit.middleware/transform dev/print-request-diffs ;; pretty diffs
         ;;:validate spec/validate ;; enable spec validation for route data
@@ -128,7 +122,9 @@
     ;;
     (ring/routes
       (swagger-ui-handler)
-      (ring/create-resource-handler {:path "/" :root "public"})
+      (ring/create-resource-handler 
+        {:path "/" :root "public"})
+        ;; :not-found-handler)
       (ring/create-default-handler))))
 ;;
 
@@ -153,7 +149,7 @@
           cf      (:http    cfg/app)
           cf (assoc cf 
               :ip                   (:host cf) 
-              :worker-name-prefix   "http-kit-"
+              :worker-name-prefix   "httpkit-"
               :server-header        nil
               :legacy-return-value? false)
           route-list
@@ -161,7 +157,7 @@
               [(swagger-json-route appname version)]
               [(index-html-route)])]
       ;
-      (debug "http-kit.listener" cf)
+      (debug "httpkit.listener" cf)
       (-> route-list
         (make-handler)
         (wrap-server-name (str appname " " version))

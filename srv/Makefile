@@ -25,10 +25,10 @@ BUILD_EDN = ${UBER_RES}/build.edn
 APPNAME   = ${ARTEFACT}
 
 TIMESTAMP ?= $(shell date -Isec)
-COMMIT ?= $(shell git rev-parse HEAD)
+COMMIT    ?= $(shell git rev-parse HEAD)
 
 
-.PHONY: dev nrepl clean javac inc-minor bump shapshot release uberjar
+.PHONY: dev psql clean javac inc-minor bump shapshot release uberjar outdated
 
 psql:
 	@(set -a && source ${DEV_ENV} && psql "$${GPXTRACK__PSQL__URL}")

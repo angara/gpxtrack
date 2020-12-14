@@ -2,14 +2,12 @@
   (:require
     [taoensso.timbre          :refer  [debug warn]]  
     ;
-    ;[reitit.coercion.spec]
     [reitit.coercion.schema]
     ; [reitit.ring.spec :as spec]
     [mlib.util              :refer  [not-blank?]]
     ;    
     [gpt.cfg                :as     cfg]
     [gpt.app.auth           :refer  [wrap-auth]])) ;wrap-require-user wrap-require-role user-login]]))
-    ;[oncab.app.user           :refer  [user-info]]))
 ;=
 
 ;; XXX: remove
@@ -22,7 +20,7 @@
 (defn auth-routes []
   ["/auth"
     {:swagger {:tags ["Authorization"]}}
-    
+
     ["/user-login"
       { :summary "login user, create jwt"
         :description "create new JWT token for registered user using login and password, 
