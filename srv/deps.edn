@@ -32,7 +32,7 @@
     ;;
 
     ;; https://github.com/ovotech/ring-jwt
-    ovotech/ring-jwt          {:mvn/version "2.0.2"}}
+    ovotech/ring-jwt          {:mvn/version "2.1.0"}}
 
     ;; https://github.com/auth0/java-jwt
     ;; com.auth0/java-jwt {:mvn/version "3.10.3"}   ;; already imported in ring-jwt

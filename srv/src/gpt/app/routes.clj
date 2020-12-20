@@ -7,7 +7,8 @@
     [mlib.util              :refer  [not-blank?]]
     ;    
     [gpt.cfg                :as     cfg]
-    [gpt.app.auth           :refer  [wrap-auth]])) ;wrap-require-user wrap-require-role user-login]]))
+    [gpt.app.auth           :refer  [wrap-auth]] ;wrap-require-user wrap-require-role user-login]]))
+    [gpt.html.home          :as     home]))
 ;=
 
 ;; XXX: remove
@@ -141,4 +142,13 @@
     ;
     (auth-routes)
     (user-routes)])
+;;
+
+; - - - - - - - - - - - - - - - - - - -
+
+(defn html-routes []
+  ["/"
+    {:get          
+      { ; :no-doc true
+        :handler home/h-root-page}}])
 ;;

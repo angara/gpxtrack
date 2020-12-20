@@ -4,7 +4,7 @@
     [mount.core               :refer  [defstate]]
     ;
     [org.httpkit.server       :refer  [run-server server-stop!]]
-    [ring.util.response       :refer  [resource-response content-type]]
+    [ring.util.response       :refer  [resource-response]]  ;content-type]]
     [reitit.ring              :as     ring]
     [reitit.coercion          :refer  [compile-request-coercers]]
     [reitit.coercion.malli]
@@ -21,7 +21,8 @@
     [muuntaja.core]
     ;    
     [gpt.cfg                :as     cfg]
-    [gpt.app.routes         :refer  [api-routes]]))
+    [gpt.app.routes         :refer  [api-routes html-routes]]
+    [gpt.html.home          :refer  [h-not-found]]))
 ;=
 
 ;; ;; ;; ;; ;; ;; ;; ;; ;; ;;
@@ -86,14 +87,14 @@
 ;;
 
 
-(defn- index-html-route []
-  ["/" {:get
-          { :no-doc true
-            :handler (fn [_] 
-                      (-> "public/index.html"
-                          (resource-response {})
-                          (content-type "text/html;charset=utf-8")))}}])
-;;
+;; (defn- index-html-route []
+;;   ["/" {:get
+;;           { :no-doc true
+;;             :handler (fn [_] 
+;;                       (-> "public/index.html"
+;;                           (resource-response {})
+;;                           (content-type "text/html;charset=utf-8")))}}])
+;; ;;
 
 (defn make-handler [route-list]
   (ring/ring-handler
@@ -118,14 +119,12 @@
               muuntaja/format-request-middleware    ;; decoding request body
               coercion/coerce-response-middleware   ;; coercing response bodys
               coercion/coerce-request-middleware    ;; coercing request parameters
-              multipart/multipart-middleware]}})                      
+              multipart/multipart-middleware]}})
     ;;
     (ring/routes
       (swagger-ui-handler)
-      (ring/create-resource-handler 
-        {:path "/" :root "public"})
-        ;; :not-found-handler)
-      (ring/create-default-handler))))
+      (ring/create-resource-handler { :path "/" :root "public"})
+      (ring/create-default-handler {:not-found h-not-found}))))
 ;;
 
 (comment
@@ -155,7 +154,8 @@
           route-list
             (concat
               [(swagger-json-route appname version)]
-              [(index-html-route)])]
+              [(api-routes)]
+              [(html-routes)])]
       ;
       (debug "httpkit.listener" cf)
       (-> route-list
