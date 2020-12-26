@@ -56,16 +56,16 @@
     ;
 
     :nrepl
-    {
-      :extra-deps
-        { nrepl/nrepl                 {:mvn/version "0.8.3"}
-          cider/cider-nrepl           {:mvn/version "0.25.5"}}
-      :main-opts
-        ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
-
+    { :extra-deps
+      { nrepl/nrepl                 {:mvn/version "0.8.3"}
+        cider/cider-nrepl           {:mvn/version "0.25.5"}}
+      :main-opts ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
+    ;
+  
     ;; https://github.com/seancorfield/depstar
-    :depstar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.136"}}}
-    :uberjar {:extra-paths ["resources" "target/resources"]}}
+    :depstar {:replace-deps {seancorfield/depstar {:mvn/version "2.0.161"}} :ns-default hf.depstar}
+    ;
+    :target-resources  {:extra-paths ["resources" "target/resources"]}}
 
   ;; ;; ;; ;;
 
