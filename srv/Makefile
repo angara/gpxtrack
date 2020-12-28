@@ -47,17 +47,12 @@ build_edn: VERSION
 	@echo ":timestamp \"${TIMESTAMP}\"">>${BUILD_EDN}
 	@echo "}">>${BUILD_EDN}
 
-# pom:
-# 	touch pom.xml
-
 javac:
 	javac ${JAVA_SRC}/mlib_org/mindrot/jbcrypt/BCrypt.java
 
 uberjar: build_edn javac
-	@touch pom.xml
-	clojure -X:depstar uberjar :aliases '[:target-resources]' :aot true :jar ${UBER_JAR} \
+	clojure -X:depstar uberjar :aliases '[:target-resources]' :sync-pom true :aot true :jar ${UBER_JAR} \
 		:main-class ${MAIN} :group-id ${GROUP_ID} :artifact-id ${ARTIFACT} :version '"${VERSION}"'
-	@rm -f pom.xml
 #
 
 build: clean uberjar
