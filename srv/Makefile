@@ -19,6 +19,7 @@ JAVA_SRC  = ./src
 TARGET 		= ./target
 RESOURCES = ./resources
 CLASSES 	= ${TARGET}/classes
+DEV_RES   = ${TARGET}/devres
 UBER_RES  = ${TARGET}/resources
 JAR_FILE  = ${TARGET}/${ARTIFACT}-${VERSION}.jar
 UBER_JAR  = ${TARGET}/${ARTIFACT}.jar
@@ -51,11 +52,15 @@ javac:
 	javac ${JAVA_SRC}/mlib_org/mindrot/jbcrypt/BCrypt.java
 
 uberjar: build_edn javac
-	clojure -X:depstar uberjar :aliases '[:target-resources]' :sync-pom true :aot true :jar ${UBER_JAR} \
+	clojure -X:depstar uberjar :aliases '[:uber-resources]' :sync-pom true :aot true :jar ${UBER_JAR} \
 		:main-class ${MAIN} :group-id ${GROUP_ID} :artifact-id ${ARTIFACT} :version '"${VERSION}"'
 #
 
-build: clean uberjar
+prod_res:
+	(cd ../ui && ls)
+	pwd
+
+build: clean uberjar prod_res
 
 # snapshot: export VERSION := ${VERSION}-SNAPSHOT
 # snapshot: uberjar
@@ -81,6 +86,7 @@ bump:
 	@cat VERSION
 
 clean:
+	rm -rf ${DEV_RES}
 	rm -rf ${UBER_RES}
 	rm -rf ${UBER_JAR}
 

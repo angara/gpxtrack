@@ -2,7 +2,8 @@ module.exports = {
   purge: [
     './src/**/*.cljs',
     './assets/**/*.css',
-    './assets/**/*.html'
+    './assets/**/*.html',
+    '../srv/src/**/*.clj'
   ],  
   theme: {
     extend: {}

@@ -1,14 +1,19 @@
-
 .EXPORT_ALL_VARIABLES:
+SHELL = /bin/bash
+
+# # # # #
+
+DEV_RES   = ../srv/target/devres
+PROD_RES  = ../srv/target/resources
+
+# # # # #
+
 .PHONY: cssdev prod_assets tailwindcss build_js prodpack
 
-DEV_RES   = ./build/dev
-PROD_RES  = ./build/prod
-
-# cssdev:
-# 	mkdir -p ${DEV_RES}/public/
-# 	cp -r assets/* ${DEV_RES}/public/
-# 	npx tailwindcss build assets/css/styles.css -o ${DEV_RES}/public/css/styles.css
+cssdev:
+	mkdir -p ${DEV_RES}/public/
+	cp -r assets/* ${DEV_RES}/public/
+	npx tailwindcss build assets/css/styles.css -o ${DEV_RES}/public/css/styles.css
 
 prod_assets:
 	@echo "prod assets"
@@ -25,3 +30,5 @@ build_js:
 
 prodpack: prod_assets build_js tailwindcss
 	@echo "prod: assets, js, css."
+
+#.
