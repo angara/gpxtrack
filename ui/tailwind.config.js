@@ -5,11 +5,17 @@ module.exports = {
     './assets/**/*.html',
     '../srv/src/**/*.clj'
   ],  
+  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {}
   },
   variants: {
     outline: ['responsive', 'focus', 'hover', 'active']
   },
-  plugins: []
+  plugins: [
+    require('@tailwindcss/forms')
+    // require('@tailwindcss/aspect-ratio'),
+    // require('@tailwindcss/typography'),
+    // require('tailwindcss-children'),
+  ]
 }

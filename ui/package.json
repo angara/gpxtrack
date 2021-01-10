@@ -16,9 +16,10 @@
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
+    "@tailwindcss/forms": "0.2.1",
+    "autoprefixer": "10.2.0",
     "shadow-cljs": "2.11.11",
-    "tailwindcss": "2.0.2",
-    "autoprefixer": "10.2.0"
+    "tailwindcss": "2.0.2"
   },
   "dependencies": {
     "leaflet": "1.7.1"

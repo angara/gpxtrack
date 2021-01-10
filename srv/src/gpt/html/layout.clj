@@ -7,8 +7,10 @@
 (def SITE_NAME    "gpxtrack.info")
 (def SITE_TITLE   "GPX Track")
 (def SITE_DESCR   "GPX Track: треки по активным турам, веломарштуры, бег, скитур, лыжные походы")
-(def FAVICON      "https://gpxtrack.info/img/favicon.ico")
-(def OG_IMAGE     "https://gpxtrack.info/img/og-image.png")
+(def FAVICON      "https://gpxtrack.info/assets/img/favicon.svg")
+(def OG_IMAGE     "https://gpxtrack.info/assets/img/og-image.png")
+
+(def ASSETS       "/assets")
 
 
 (defn head-meta
@@ -40,11 +42,18 @@
    :body (html5 content)})
 ;;
 
+(defn head-css []
+  [
+    [:link {:rel "stylesheet" :href (str ASSETS "/css/styles.css")}]
+    [:link {:rel "stylesheet" :href (str ASSETS "/fonts/roboto.css")}]])
+;;
+
 (defn head-body [{:keys [extra] :as head} body]
     (list
       [:head 
         (concat 
           (head-meta head)
+          (head-css)
           extra)]
       "\n"
       [:body

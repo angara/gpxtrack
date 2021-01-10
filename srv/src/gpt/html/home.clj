@@ -6,13 +6,18 @@
 
 (defn h-root-page [_]
   (->
-    (head-body {} [:h1 "GPX Track"])
+    (head-body {} 
+      (list
+        [:h1 "GPX Track"]
+        [:a {:href "https://angara.net"} "Angara.Net"]))
     (html-resp)))
 ;;
 
 (defn h-not-found [_]
   (prn "not-found")
   (->
-    (head-body {} [:h2 "Not Found"])
+    (head-body 
+      {}
+      [:h2 "Not Found"])
     (html-resp)))
 ;;
