@@ -34,7 +34,7 @@ create index user_auth_user_idx on user_auth (user_id);
 
 create table user_authcode (
   authcode  varchar(40) primary key,      -- unique one time authorization code
-  user_id   varchar(80) not null references user_base(user_id),
+  user_data jsonb,                        -- {uid, msgr, username, first_name, last_name, middle_name, ...}
   expire    bigint not null
 );
 

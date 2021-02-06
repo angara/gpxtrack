@@ -21,7 +21,7 @@
     [muuntaja.core]
     ;    
     [gpt.cfg                :as     cfg]
-    [gpt.app.routes         :refer  [api-routes html-routes]]
+    [gpt.app.routes         :refer  [api-routes internal-routes html-routes]]
     [gpt.html.home          :refer  [h-not-found]]))
 ;=
 
@@ -129,8 +129,10 @@
 
 (comment
 
-  (resource-response "public/index.html"))
+  (resource-response "public/index.html")
+  (api-routes)
 
+  ,)
   ;; (def app (make-handler))
 
   ; (app
@@ -139,7 +141,7 @@
   ;     :query-params {"x" "1", "y" "fail"}}))
 
 
-;; https://github.com/http-kit/http-kit/blob/master/src/org/httpkit/server.clj      
+;; https://github.com/http-kit/http-kit/blob/master/src/org/httpkit/server.clj
 ;; 
 (defstate server
   :start
@@ -155,6 +157,7 @@
             (concat
               [(swagger-json-route appname version)]
               [(api-routes)]
+              [(internal-routes)]
               [(html-routes)])]
       ;
       (debug "httpkit.listener" cf)

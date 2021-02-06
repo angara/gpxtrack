@@ -1,6 +1,6 @@
 (ns gpt.app.routes
   (:require
-    [taoensso.timbre          :refer  [debug warn]]  
+    [taoensso.timbre          :refer  [debug warn]]
     ;
     [reitit.coercion.schema]
     ; [reitit.ring.spec :as spec]
@@ -8,7 +8,9 @@
     ;    
     [gpt.cfg                :as     cfg]
     [gpt.app.auth           :refer  [wrap-auth]] ;wrap-require-user wrap-require-role user-login]]))
-    [gpt.html.home          :as     home]))
+    [gpt.html.home          :as     home]
+    [gpt.app.internal       :refer  [wrap-require-apikey]]
+    [gpt.user.auth          :refer  [bind-messenger-code]]))
 ;=
 
 ;; XXX: remove
@@ -90,6 +92,24 @@
         ;:get user-info}]])
 ;-
 
+; - - - - - - - - - - - - - - - - - - -
+
+(defn internal-routes []
+  ["/_internal"
+    { :no-doc true
+      :middleware [[wrap-require-apikey (:apikey cfg/internal)]]}
+    ["/bind-messenger-code"
+      { :parameters 
+          {:body 
+            [:map 
+              {:closed false}
+              [:uid string?] 
+              [:msgr string?]]}
+        :post #(bind-messenger-code (-> % :parameters :body))
+        :get  #(bind-messenger-code (-> % :parameters :body))}]])
+;;
+
+; - - - - - - - - - - - - - - - - - - -
 
 (defn api-routes []
   ["/api"
@@ -143,6 +163,8 @@
     (auth-routes)
     (user-routes)])
 ;;
+
+#_(api-routes)
 
 ; - - - - - - - - - - - - - - - - - - -
 

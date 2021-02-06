@@ -1,0 +1,6 @@
+#!/usr/bin/env bb
+
+(curl/post "http://localhost:8020/_internal/bind-messenger-code" {:uid "123" :msgr "tg"})
+
+
+;; (curl/get "http://localhost:8020/user/info")

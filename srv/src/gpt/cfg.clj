@@ -1,6 +1,6 @@
 (ns gpt.cfg
   (:require
-    [clojure.spec.alpha     :as       s]
+    [clojure.spec.alpha     :as       s]  
     [clojure.edn            :as       edn]
     [cprop.core             :refer    [load-config]]
     [cprop.source           :refer    [from-resource from-env]]
@@ -45,11 +45,19 @@
 
 ; - - - - - - - - - - - - - - - - - - - 
 
+(s/def ::apikey ::b/not-blank)
+
+(s/def ::internal
+  (s/keys
+    :req-un [::apikey]))
+
+; - - - - - - - - - - - - - - - - - - - 
+
 (s/def ::bucket ::b/not-blank)
 
 (s/def ::gpxtrack
   (s/keys
-    :req-un [::psql ::jwt ::http ::bucket]))
+    :req-un [::psql ::jwt ::http ::internal ::bucket]))
 
 ; - - - - - - - - - - - - - - - - - - - 
 
@@ -70,6 +78,7 @@
 (declare  build)
 (declare  psql)
 (declare  minio)
+(declare  internal)
 
 (defstate config
   :start
@@ -82,10 +91,11 @@
                   (load-config :merge)
                   (b/conform! ::conf))]
       ;
-      (alter-var-root #'app   (constantly (:gpxtrack conf)))
-      (alter-var-root #'build (constantly (:build conf)))
-      (alter-var-root #'minio (constantly (-> conf :minio)))
-      (alter-var-root #'psql  (constantly (-> conf :gpxtrack :psql)))
+      (alter-var-root #'app       (constantly (:gpxtrack conf)))
+      (alter-var-root #'build     (constantly (:build conf)))
+      (alter-var-root #'minio     (constantly (-> conf :minio)))
+      (alter-var-root #'psql      (constantly (-> conf :gpxtrack :psql)))
+      (alter-var-root #'internal  (constantly (-> conf :internal)))
       ;
       conf))
 ;=

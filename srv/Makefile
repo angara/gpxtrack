@@ -29,6 +29,7 @@ APPNAME   = ${ARTIFACT}
 TIMESTAMP ?= $(shell date -Isec)
 COMMIT    ?= $(shell git rev-parse HEAD)
 
+# # #
 
 .PHONY: dev build psql clean javac inc-minor bump shapshot release uberjar outdated
 

@@ -6,7 +6,11 @@
       :host "localhost"
       :port 8020
       :max-body 20000000}   ;; 20 M
-
+      
+    :internal
+    {
+      :apikey ""}
+    
     :psql
     {
       :url ""      ;; MUST BE SET!!!
