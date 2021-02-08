@@ -22,15 +22,15 @@
         :body (json/generate-string params)}
     )
     (:body)
-    (json/parse-string)
+    (json/parse-string true)
   ))  
 ;;
 
 (defn -main []
   (try
     (post-json
-      "http://localhost:8020/_internal/bind-messenger-code" 
-      {:uid "123" :msgr "tg"}
+      "http://localhost:8020/_internal/messenger-authcode" 
+      {:uid "123" :msgr ""}
       )
     (catch Exception ex
       (binding [*out* *err*]

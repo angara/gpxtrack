@@ -9,8 +9,7 @@
     [gpt.cfg                :as     cfg]
     [gpt.app.auth           :refer  [wrap-auth]] ;wrap-require-user wrap-require-role user-login]]))
     [gpt.html.home          :as     home]
-    [gpt.app.internal       :refer  [wrap-require-apikey]]
-    [gpt.user.auth          :refer  [bind-messenger-code]]))
+    [gpt.app.internal       :refer  [wrap-require-apikey messenger-authcode]]))
 ;=
 
 ;; XXX: remove
@@ -98,15 +97,14 @@
   ["/_internal"
     { :no-doc true
       :middleware [[wrap-require-apikey (:apikey cfg/internal)]]}
-    ["/bind-messenger-code"
+    ["/messenger-authcode"
       { :parameters 
           {:body 
             [:map 
               {:closed false}
-              [:uid string?] 
-              [:msgr string?]]}
-        :post #(bind-messenger-code (-> % :parameters :body))
-        :get  #(bind-messenger-code (-> % :parameters :body))}]])
+              [:uid   [:fn not-blank?]]
+              [:msgr  [:fn not-blank?]]]}
+        :post #(messenger-authcode (-> % :parameters :body))}]])
 ;;
 
 ; - - - - - - - - - - - - - - - - - - -
