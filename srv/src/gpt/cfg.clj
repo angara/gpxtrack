@@ -95,7 +95,7 @@
       (alter-var-root #'build     (constantly (:build conf)))
       (alter-var-root #'minio     (constantly (-> conf :minio)))
       (alter-var-root #'psql      (constantly (-> conf :gpxtrack :psql)))
-      (alter-var-root #'internal  (constantly (-> conf :internal)))
+      (alter-var-root #'internal  (constantly (-> conf :gpxtrack :internal)))
       ;
       conf))
 ;=

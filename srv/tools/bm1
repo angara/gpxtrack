@@ -1,6 +1,46 @@
 #!/usr/bin/env bb
 
-(curl/post "http://localhost:8020/_internal/bind-messenger-code" {:uid "123" :msgr "tg"})
+(require '[clojure.string :refer [blank?]])
+
+(defn die [msg]
+  (.println System/err (str msg))
+  (System/exit 1))
+;;
+
+(def APIKEY (System/getenv "GPXTRACK__INTERNAL__APIKEY"))
+
+(when (blank? APIKEY)
+  (die "apikey should not be blank"))
+;;
+
+(defn post-json [url params]
+  (-> url
+    (curl/post
+      { 
+        :headers  { "Content-Type"  "application/json"
+                    "Authorization" (str "apikey " APIKEY)}
+        :body (json/generate-string params)}
+    )
+    (:body)
+    (json/parse-string)
+  ))  
+;;
+
+(defn -main []
+  (try
+    (post-json
+      "http://localhost:8020/_internal/bind-messenger-code" 
+      {:uid "123" :msgr "tg"}
+      )
+    (catch Exception ex
+      (binding [*out* *err*]
+        (println "catch:" (ex-message ex) " " (ex-data ex))
+        (System/exit 1))
+    )))
+;;
 
 
-;; (curl/get "http://localhost:8020/user/info")
+(-main)
+
+
+;;.
