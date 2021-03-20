@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -a -e
+source VARS 
+source ${DEV_ENV}
+psql "${GPXTRACK__PSQL__URL}"
+
+#.

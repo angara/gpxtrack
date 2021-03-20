@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -a -e
+source VARS
+source ${DEV_ENV} 
+export  CONFIG_EDN=${DEV_CONFIG} 
+clojure -M:dev:nrepl
+
+#.

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# global env
+
+GROUP_ID="angara"
+ARTIFACT="gpxtrack"
+DESCR="GPX Track backend"
+REPO_URL="https://github.com/angara/gpxtrack"
+MAIN="gpt.main"
+
+# vars
+
+APPNAME=${ARTIFACT}
+: ${VERSION:=`cat VERSION`}
+: ${TIMESTAMP:=`date -Isec`}
+: ${COMMIT:=`git rev-parse HEAD`}
+: ${DEV_ENV:="../conf/dev.env"}
+: ${DEV_CONFIG:="../conf/dev.edn"}
+
+# build paths
+
+JAVA_SRC=./src
+TARGET=./target
+RESOURCES=./resources
+CLASSES=${TARGET}/classes
+DEV_RES=${TARGET}/devres
+UBER_RES=${TARGET}/resources
+JAR_FILE=${TARGET}/${ARTIFACT}-${VERSION}.jar
+UBER_JAR=${TARGET}/${ARTIFACT}.jar
+BUILD_EDN=${UBER_RES}/build.edn
+
+#.

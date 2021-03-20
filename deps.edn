@@ -1,13 +1,13 @@
 {
   :deps
   {
-    org.clojure/clojure       {:mvn/version "1.10.2"}
+    org.clojure/clojure       {:mvn/version "1.10.3"}
     org.clojure/core.async    {:mvn/version "1.3.610"}
 
     metosin/spec-tools        {:mvn/version "0.10.5"}
     metosin/jsonista          {:mvn/version "0.3.1"}
     metosin/reitit            {:mvn/version "0.5.12"}
-    metosin/malli             {:mvn/version "0.2.1"}
+    metosin/malli             {:mvn/version "0.3.0"}
 
     cprop/cprop               {:mvn/version "0.1.17"}
     mount/mount               {:mvn/version "0.1.16"}
@@ -20,15 +20,15 @@
     io.minio/minio            {:mvn/version "8.1.0"}
     ;
     ;; psql:
-    org.postgresql/postgresql {:mvn/version "42.2.19"}
-    com.zaxxer/HikariCP       {:mvn/version "4.0.2"}
-    seancorfield/next.jdbc    {:mvn/version "1.1.613"}
-    honeysql/honeysql         {:mvn/version "1.0.461"}
-    nilenso/honeysql-postgres {:mvn/version "0.2.6"}
-    migratus/migratus         {:mvn/version "1.3.5"}
+    org.postgresql/postgresql         {:mvn/version "42.2.19"}
+    com.zaxxer/HikariCP               {:mvn/version "4.0.3"}
+    com.github.seancorfield/next.jdbc {:mvn/version "1.1.646"}
+    com.github.seancorfield/honeysql  {:mvn/version "2.0.0-alpha3"}
+    ; nilenso/honeysql-postgres         {:mvn/version "0.4.112"}
+    migratus/migratus                 {:mvn/version "1.3.5"}
   
     com.taoensso/timbre       {:mvn/version "5.1.2"}
-    com.fzakaria/slf4j-timbre {:mvn/version "0.3.20"}
+    com.fzakaria/slf4j-timbre {:mvn/version "0.3.21"}
     org.slf4j/slf4j-api       {:mvn/version "1.7.30"}
     ;;
 
@@ -38,8 +38,6 @@
     ;; https://github.com/auth0/java-jwt
     ;; com.auth0/java-jwt {:mvn/version "3.10.3"}   ;; already imported in ring-jwt
 
-    ;; example
-    ;; mlib-clj {:local/root "/path/to/mlib-clj"}}
   ;
   :paths ["src"]
 
@@ -50,8 +48,8 @@
       :extra-paths ["dev" "resources" "target/devres"]
       :extra-deps 
       {
-        clj-kondo/clj-kondo         {:mvn/version "2021.02.13"}
-        hashp/hashp                 {:mvn/version "0.2.0"}
+        ;; clj-kondo/clj-kondo         {:mvn/version "2021.03.03"}
+        ;; hashp/hashp                 {:mvn/version "0.2.1"}
         org.clojure/tools.namespace {:mvn/version "1.1.0"}
         criterium/criterium         {:mvn/version "0.4.6"}}}
     ;
@@ -67,7 +65,7 @@
     :depstar 
     {
       :replace-deps 
-      { seancorfield/depstar {:mvn/version "2.0.188"}} 
+      { com.github.seancorfield/depstar {:mvn/version "2.0.206"}} 
       :ns-default hf.depstar}
     ;
     :uber-resources  {:extra-paths ["resources" "target/resources"]}}

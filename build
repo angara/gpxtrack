@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -a -e
+source VARS
+
+# clean:
+# rm -rf ${DEV_RES}
+# rm -rf ${UBER_RES}
+# rm -rf ${UBER_JAR}
+
+mkdir -p ${UBER_RES}
+echo "{">${BUILD_EDN}
+echo ":appname \"${APPNAME}\"">>${BUILD_EDN}
+echo ":version \"${VERSION}\"">>${BUILD_EDN}
+echo ":commit \"${COMMIT}\"">>${BUILD_EDN}
+echo ":timestamp \"${TIMESTAMP}\"">>${BUILD_EDN}
+echo "}">>${BUILD_EDN}
+cat ${BUILD_EDN}
+
+javac ${JAVA_SRC}/mlib_org/mindrot/jbcrypt/BCrypt.java
+
+clojure -X:depstar uberjar :aliases '[:uber-resources]' :sync-pom true :aot true :jar ${UBER_JAR} \
+	  :main-class ${MAIN} :group-id ${GROUP_ID} :artifact-id ${ARTIFACT} :version '"'${VERSION}'"'
+
+#.
+
+# snapshot: export VERSION := ${VERSION}-SNAPSHOT
+# snapshot: uberjar
+# 	@mvn deploy:deploy-file 		\
+# 		-DpomFile=pom.xml					\
+# 		-Dfile=${UBER_JAR} 				\
+# 		-DrepositoryId=${REPO_ID}	\
+# 		-Durl=${SNAPSHOTS_URL}
+
+# release: uberjar
+# 	@mvn deploy:deploy-file 		\
+# 		-DpomFile=pom.xml					\
+# 		-Dfile=${UBER_JAR} 				\
+# 		-DrepositoryId=${REPO_ID}	\
+# 		-Durl=${RELEASES_URL}
